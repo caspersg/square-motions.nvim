@@ -1,3 +1,5 @@
+local ts_move = require("nvim-treesitter.textobjects.move")
+
 local M = {}
 
 M.default_config = {
@@ -5,11 +7,16 @@ M.default_config = {
     prev = "[",
     motions = {
         -- these will be default keymaps soon, so could be removed soon
-        { key = "d", desc = "[d]iagnostic", next = vim.diagnostic.goto_next, prev = vim.diagnostic.goto_prev },
-        { key = "q", desc = "[q]uickfix item", next = vim.cmd.cnext, prev = vim.cmd.cprevious },
-        { key = "b", desc = "[b]uffer", next = vim.cmd.bnext, prev = vim.cmd.bprevious },
+        {
+            key = "d",
+            desc = "[d]iagnostic",
+            next_func = vim.diagnostic.goto_next,
+            prev_func = vim.diagnostic.goto_prev,
+        },
+        { key = "q", desc = "[q]uickfix item", next_func = vim.cmd.cnext, prev_func = vim.cmd.cprevious },
+        { key = "b", desc = "[b]uffer", next_func = vim.cmd.bnext, prev_func = vim.cmd.bprevious },
 
-        { key = "t", desc = "[t]ab", next = vim.cmd.tabnext, prev = vim.cmd.tabprevious },
+        { key = "t", desc = "[t]ab", next_func = vim.cmd.tabnext, prev_func = vim.cmd.tabprevious },
         { key = "l", desc = "fo[l]d", next = "zj", prev = "zk" },
         { key = "w", desc = "[w]indow", next = "<C-w>w", prev = "<C-w>W" },
     },
@@ -73,15 +80,37 @@ M.default_config = {
     },
 }
 
+M.textobject_motions = function()
+    local keymaps = {}
+    for _, def in ipairs(M.config.textobjects) do
+        local next = function()
+            ts_move.goto_next(def.query)
+        end
+        local prev = function()
+            ts_move.goto_previous(def.query)
+        end
+        table.insert(keymaps, { key = def.key, desc = def.desc, next_func = next, prev_func = prev })
+    end
+    return keymaps
+end
+
 --- setup the plugin
 --- @param opts table: configuration options
 M.setup = function(opts)
     M.config = vim.tbl_deep_extend("keep", opts or {}, M.default_config)
 
     for _, def in ipairs(M.config.motions) do
-        local desc = { desc = def.desc, noremap = true, silent = true }
-        vim.keymap.set({ "n", "v" }, M.config.next .. def.key, def.next, desc)
-        vim.keymap.set({ "n", "v" }, M.config.prev .. def.key, def.prev, desc)
+        local desc = { desc = def.desc, remap = true }
+        vim.keymap.set({ "n", "v" }, M.config.next .. def.key, def.next or def.next_func, desc)
+        vim.keymap.set({ "n", "v" }, M.config.prev .. def.key, def.prev or def.prev_func, desc)
+    end
+
+    for _, def in ipairs(M.textobject_motions()) do
+        local next_key = M.config.next .. def.key
+        local prev_key = M.config.prev .. def.key
+        local desc = { desc = def.desc, remap = true }
+        vim.keymap.set({ "n", "v" }, next_key, def.next_func, desc)
+        vim.keymap.set({ "n", "v" }, prev_key, def.prev_func, desc)
     end
 
     local keymaps = M.textobject_keymaps(M.config)
@@ -95,12 +124,12 @@ M.setup = function(opts)
                 keymaps = keymaps.select_keymaps,
                 include_surrounding_whitespace = false,
             },
-            move = {
-                enable = true,
-                set_jumps = true, -- whether to set jumps in the jumplist
-                goto_next = keymaps.next,
-                goto_previous = keymaps.prev,
-            },
+            -- move = {
+            --     enable = true,
+            --     set_jumps = true, -- whether to set jumps in the jumplist
+            --     goto_next = keymaps.next,
+            --     goto_previous = keymaps.prev,
+            -- },
             swap = {
                 enable = true,
                 swap_next = keymaps.swap_next,
