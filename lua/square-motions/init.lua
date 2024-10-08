@@ -109,16 +109,16 @@ M.setup = function(opts)
 
     for _, def in ipairs(M.config.motions) do
         local desc = { desc = def.desc, remap = true }
-        vim.keymap.set({ "n", "v" }, M.config.next_prefix .. def.key, def.next, desc)
-        vim.keymap.set({ "n", "v" }, M.config.prev_prefix .. def.key, def.prev, desc)
+        vim.keymap.set({ "n", "v", "o" }, M.config.next_prefix .. def.key, def.next, desc)
+        vim.keymap.set({ "n", "v", "o" }, M.config.prev_prefix .. def.key, def.prev, desc)
     end
 
     for _, def in ipairs(M.textobject_motions()) do
         local next_key = M.config.next_prefix .. def.key
         local prev_key = M.config.prev_prefix .. def.key
         local desc = { desc = def.desc, remap = true }
-        vim.keymap.set({ "n", "v" }, next_key, def.next, desc)
-        vim.keymap.set({ "n", "v" }, prev_key, def.prev, desc)
+        vim.keymap.set({ "n", "v", "o" }, next_key, def.next, desc)
+        vim.keymap.set({ "n", "v", "o" }, prev_key, def.prev, desc)
     end
 
     local keymaps = M.textobject_keymaps(M.config)
