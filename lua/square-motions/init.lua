@@ -88,7 +88,6 @@ M.default_config = {
     { key = "aS", desc = "[S]tatement", query = "@statement.outer" },
 
     -- ["]s"] = { query = "@scope", query_group = "locals", desc = "Next scope" },
-    --
   },
 }
 
@@ -136,7 +135,7 @@ M.setup = function(opts)
         keymaps = keymaps.select_keymaps,
         include_surrounding_whitespace = false,
       },
-      -- using this to define the keymaps means those keymaps cannot b overridden
+      -- using this to define the keymaps means those keymaps cannot be overridden
       -- which breaks last-motions
       -- move = {
       --     enable = true,
