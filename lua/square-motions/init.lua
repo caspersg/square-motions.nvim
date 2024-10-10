@@ -1,4 +1,5 @@
 local ts_move = require("nvim-treesitter.textobjects.move")
+local indent = require("square-motions.indent")
 
 local M = {}
 
@@ -27,6 +28,8 @@ M.default_config = {
     { key = "t", desc = "[t]ab", next = vim.cmd.tabnext, prev = vim.cmd.tabprevious },
     { key = "l", desc = "fo[l]d", next = cmd("zj"), prev = cmd("zk") },
     { key = "w", desc = "[w]indow", next = cmd("<C-w>w"), prev = cmd("<C-w>W") },
+
+    { key = "n", desc = "i[n]dent", next = indent.next_indent, prev = indent.prev_indent },
   },
 
   swap_next = "]S",
@@ -132,7 +135,7 @@ M.setup = function(opts)
         keymaps = keymaps.select_keymaps,
         include_surrounding_whitespace = false,
       },
-      -- using this to define the keymaps means those keymaps cannot b overridden
+      -- using this to define the keymaps means those keymaps cannot be overridden
       -- which breaks last-motions
       -- move = {
       --     enable = true,
