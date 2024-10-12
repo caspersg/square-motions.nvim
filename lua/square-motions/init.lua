@@ -30,6 +30,16 @@ M.default_config = {
     { key = "w", desc = "[w]indow", next = cmd("<C-w>w"), prev = cmd("<C-w>W") },
 
     { key = "n", desc = "i[n]dent", next = indent.next_indent, prev = indent.prev_indent },
+    {
+      key = "j",
+      desc = "[j]umps",
+      next = function()
+        -- C-i is a special case, it's the same as tab, so it requires feedkeys
+        -- TODO: But this doesn't work in operator pending mode
+        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-i>", true, true, true), "n", true)
+      end,
+      prev = cmd("<C-o>"),
+    },
   },
 
   swap_next = "]S",
