@@ -1,5 +1,6 @@
 local ts_move = require("nvim-treesitter.textobjects.move")
 local indent = require("square-motions.indent")
+local quickfix = require("square-motions.quickfix")
 
 local M = {}
 
@@ -16,22 +17,8 @@ M.default_config = {
   prev_prefix = "[",
   motions = {
     -- these will be default keymaps soon, so could be removed soon
-    {
-      key = "d",
-      desc = "[d]iagnostic",
-      next = vim.diagnostic.goto_next,
-      prev = vim.diagnostic.goto_prev,
-    },
-    {
-      key = "q",
-      desc = "[q]uickfix item",
-      next = function()
-        pcall(vim.cmd.cnext)
-      end,
-      prev = function()
-        pcall(vim.cmd.cprevious)
-      end,
-    },
+    { key = "d", desc = "[d]iagnostic", next = vim.diagnostic.goto_next, prev = vim.diagnostic.goto_prev },
+    { key = "q", desc = "[q]uickfix item", next = quickfix.next_quickfix, prev = quickfix.prev_quickfix },
     { key = "b", desc = "[b]uffer", next = vim.cmd.bnext, prev = vim.cmd.bprevious },
 
     { key = "t", desc = "[t]ab", next = vim.cmd.tabnext, prev = vim.cmd.tabprevious },
