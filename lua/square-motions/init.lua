@@ -22,7 +22,16 @@ M.default_config = {
       next = vim.diagnostic.goto_next,
       prev = vim.diagnostic.goto_prev,
     },
-    { key = "q", desc = "[q]uickfix item", next = vim.cmd.cnext, prev = vim.cmd.cprevious },
+    {
+      key = "q",
+      desc = "[q]uickfix item",
+      next = function()
+        pcall(vim.cmd.cnext)
+      end,
+      prev = function()
+        pcall(vim.cmd.cprevious)
+      end,
+    },
     { key = "b", desc = "[b]uffer", next = vim.cmd.bnext, prev = vim.cmd.bprevious },
 
     { key = "t", desc = "[t]ab", next = vim.cmd.tabnext, prev = vim.cmd.tabprevious },
