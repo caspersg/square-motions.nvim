@@ -1,5 +1,6 @@
 local ts_move = require("nvim-treesitter.textobjects.move")
 local indent = require("square-motions.indent")
+local quickfix = require("square-motions.quickfix")
 
 local M = {}
 
@@ -16,13 +17,8 @@ M.default_config = {
   prev_prefix = "[",
   motions = {
     -- these will be default keymaps soon, so could be removed soon
-    {
-      key = "d",
-      desc = "[d]iagnostic",
-      next = vim.diagnostic.goto_next,
-      prev = vim.diagnostic.goto_prev,
-    },
-    { key = "q", desc = "[q]uickfix item", next = vim.cmd.cnext, prev = vim.cmd.cprevious },
+    { key = "d", desc = "[d]iagnostic", next = vim.diagnostic.goto_next, prev = vim.diagnostic.goto_prev },
+    { key = "q", desc = "[q]uickfix item", next = quickfix.next_quickfix, prev = quickfix.prev_quickfix },
     { key = "b", desc = "[b]uffer", next = vim.cmd.bnext, prev = vim.cmd.bprevious },
 
     { key = "t", desc = "[t]ab", next = vim.cmd.tabnext, prev = vim.cmd.tabprevious },
@@ -30,6 +26,16 @@ M.default_config = {
     { key = "w", desc = "[w]indow", next = cmd("<C-w>w"), prev = cmd("<C-w>W") },
 
     { key = "n", desc = "i[n]dent", next = indent.next_indent, prev = indent.prev_indent },
+    {
+      key = "j",
+      desc = "[j]umps",
+      next = function()
+        -- C-i is a special case, it's the same as tab, so it requires feedkeys
+        -- TODO: But this doesn't work in operator pending mode
+        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-i>", true, true, true), "n", true)
+      end,
+      prev = cmd("<C-o>"),
+    },
   },
 
   swap_next = "]S",

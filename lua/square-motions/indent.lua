@@ -9,6 +9,7 @@ local function goto_different_indent(inc)
   while wrapped < 2 and next_line ~= current_line do
     if vim.fn.indent(next_line) ~= current_indent and vim.fn.nextnonblank(next_line) == next_line then
       -- vim.notify("set_line" .. next_line)
+      vim.cmd("normal! m`") -- add to jumplist
       vim.api.nvim_win_set_cursor(0, { next_line, 0 })
       return
     end
