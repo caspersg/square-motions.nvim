@@ -24,6 +24,7 @@ M.default_config = {
     { key = "t", desc = "[t]ab", next = vim.cmd.tabnext, prev = vim.cmd.tabprevious },
     { key = "l", desc = "fo[l]d", next = cmd("zj"), prev = cmd("zk") },
     { key = "w", desc = "[w]indow", next = cmd("<C-w>w"), prev = cmd("<C-w>W") },
+    { key = "c", desc = "[c]hange", next = cmd("g,"), prev = cmd("g;") },
 
     { key = "n", desc = "i[n]dent", next = indent.next_indent, prev = indent.prev_indent },
     {
