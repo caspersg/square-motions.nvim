@@ -33,7 +33,9 @@ M.default_config = {
       next = function()
         -- C-i is a special case, it's the same as tab, so it requires feedkeys
         -- TODO: But this doesn't work in operator pending mode
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-i>", true, true, true), "n", true)
+        -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-i>", true, true, true), "n", true)
+        -- this works with 1 but not without it
+        vim.cmd([[execute "normal! ]] .. "1" .. [[\<c-i>"]])
       end,
       prev = cmd("<C-o>"),
     },
