@@ -1,6 +1,5 @@
 local ts_move = require("nvim-treesitter.textobjects.move")
 local indent = require("square-motions.indent")
-local quickfix = require("square-motions.quickfix")
 
 local M = {}
 
@@ -16,13 +15,25 @@ M.default_config = {
   next_prefix = "]",
   prev_prefix = "[",
   motions = {
-    -- these will be default keymaps soon, so could be removed soon
-    { key = "d", desc = "[d]iagnostic", next = vim.diagnostic.goto_next, prev = vim.diagnostic.goto_prev },
-    { key = "q", desc = "[q]uickfix item", next = quickfix.next_quickfix, prev = quickfix.prev_quickfix },
-    { key = "b", desc = "[b]uffer", next = vim.cmd.bnext, prev = vim.cmd.bprevious },
-
+    -- same as default in neovim 0.11
+    -- { key = "q", desc = "[q]uickfix item", next = quickfix.next_quickfix, prev = quickfix.prev_quickfix },
+    -- { key = "b", desc = "[b]uffer", next = vim.cmd.bnext, prev = vim.cmd.bprevious },
+    -- show the diagnostic in a floating window like previous behaviour
+    {
+      key = "d",
+      desc = "[d]iagnostic",
+      next = function()
+        vim.diagnostic.jump({ count = 1, float = true })
+      end,
+      prev = function()
+        vim.diagnostic.jump({ count = -1, float = true })
+      end,
+    },
+    -- tab is more useful than tag matchlist
     { key = "t", desc = "[t]ab", next = vim.cmd.tabnext, prev = vim.cmd.tabprevious },
+    -- folds instead of location list
     { key = "l", desc = "fo[l]d", next = cmd("zj"), prev = cmd("zk") },
+
     { key = "w", desc = "[w]indow", next = cmd("<C-w>w"), prev = cmd("<C-w>W") },
     { key = "c", desc = "[c]hange", next = cmd("g,"), prev = cmd("g;") },
 
