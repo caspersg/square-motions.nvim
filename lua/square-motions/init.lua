@@ -15,9 +15,9 @@ M.default_config = {
   next_prefix = "]",
   prev_prefix = "[",
   motions = {
-    -- same as default in neovim 0.11
-    -- { key = "q", desc = "[q]uickfix item", next = quickfix.next_quickfix, prev = quickfix.prev_quickfix },
-    -- { key = "b", desc = "[b]uffer", next = vim.cmd.bnext, prev = vim.cmd.bprevious },
+    -- same as default in neovim 0.11, but using the keys directly wasn't working
+    { key = "q", desc = "[q]uickfix item", next = vim.cmd.cnext, prev = vim.cmd.cprevious },
+    { key = "b", desc = "[b]uffer", next = vim.cmd.bnext, prev = vim.cmd.bprevious },
     -- show the diagnostic in a floating window like previous behaviour
     {
       key = "d",
