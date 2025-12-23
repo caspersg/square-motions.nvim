@@ -24,6 +24,7 @@ M.default_config = {
     { key = "t", desc = "[t]ab", next = vim.cmd.tabnext, prev = vim.cmd.tabprevious },
     { key = "l", desc = "fo[l]d", next = cmd("zj"), prev = cmd("zk") },
     { key = "w", desc = "[w]indow", next = cmd("<C-w>w"), prev = cmd("<C-w>W") },
+    { key = "c", desc = "[c]hange", next = cmd("g,"), prev = cmd("g;") },
 
     { key = "n", desc = "i[n]dent", next = indent.next_indent, prev = indent.prev_indent },
     {
@@ -32,7 +33,9 @@ M.default_config = {
       next = function()
         -- C-i is a special case, it's the same as tab, so it requires feedkeys
         -- TODO: But this doesn't work in operator pending mode
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-i>", true, true, true), "n", true)
+        -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-i>", true, true, true), "n", true)
+        -- this works with 1 but not without it
+        vim.cmd([[execute "normal! ]] .. "1" .. [[\<c-i>"]])
       end,
       prev = cmd("<C-o>"),
     },
