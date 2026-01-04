@@ -5,6 +5,25 @@ Includes nvim-treesitter-textobjects
 
 Other plugins add start and end keymaps too, but I like just next/previous.
 
+## Installation
+
+**[Lazy.nvim](https://github.com/folke/lazy.nvim)**
+
+```lua
+{
+  "caspersg/square-motions.nvim",
+  dependencies = {
+    { "nvim-treesitter/nvim-treesitter" },
+    { "nvim-treesitter/nvim-treesitter-textobjects" },
+  },
+  config = function()
+    require("square-motions").setup({})
+  end,
+}
+
+```
+
+
 ## examples
 
 `]b` next buffer
