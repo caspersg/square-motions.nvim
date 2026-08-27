@@ -147,7 +147,7 @@ M.setup = function(opts)
   local keymaps = M.textobject_keymaps(M.config)
 
   -- vim.notify("keymaps " .. vim.inspect(keymaps))
-  require("nvim-treesitter.configs").setup({
+  require("nvim-treesitter-textobjects").setup({
     textobjects = {
       select = {
         enable = true,
