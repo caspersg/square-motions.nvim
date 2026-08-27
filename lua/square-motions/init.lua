@@ -1,4 +1,4 @@
-local ts_move = require("nvim-treesitter.textobjects.move")
+local ts_move = require("nvim-treesitter-textobjects.move")
 local indent = require("square-motions.indent")
 
 local M = {}
